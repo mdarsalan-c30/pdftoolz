@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to PDF Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    .h2{
+        font-family: 'Times New Roman', Times, serif;
+
+    }
+
+#convertHtmlToPdf{
+    padding: 10px;
+    background-color: green;
+
+}
+
+.heading{
+    font: bold;
+    color: rgb(6, 6, 6);
+}
+</style>
+<body>
+    <nav class="navbar">
+        <!-- Navbar content -->
+    </nav>
+
+    <main>
+        <section class="container">
+            <div class="heading"><h2>HTML to PDF Converter</h2>
+            </div>
+            <div class="text_area" >
+            <textarea id="htmlContent" placeholder="Enter HTML content..."></textarea>
+        </div>
+            <button id="convertHtmlToPdf">Convert to PDF</button>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('convertHtmlToPdf').addEventListener('click', function() {
+    const htmlContent = document.getElementById('htmlContent').value.trim();
+    if (htmlContent !== '') {
+        // Convert HTML to PDF
+        console.log('HTML Content:', htmlContent); // Log HTML content for debugging
+        html2pdf().from(htmlContent).save();
+    } else {
+        alert('Please enter HTML content to convert.');
+    }
+});
+
+    </script>
+</body>
+</html>

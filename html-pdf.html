@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to PDF Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+</head>
+<style>
+
+
+
+.containerx {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 400px;
+    width: 90%;
+    display: grid;
+    place-items: center;
+}
+
+
+h1 {
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    display: block;
+    margin: 20px auto;
+}
+
+button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+#output {
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+</style>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo"><img src="logo.png" ></div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#tools" class="nav-link">Tools</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="cta-buttons">
+                <a href="#get-started" class="btn primary-btn">Get Started</a>
+                <a href="#try-free" class="btn secondary-btn">Try for Free</a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+        <!--start of the IMG TO PDF CONVERTOR-->
+        <section id="htmlToPdf">
+            <h2>HTML to PDF Converter</h2>
+            <textarea id="htmlContent" placeholder="Enter HTML content..."></textarea>
+            <button id="convertHtmlToPdf">Convert to PDF</button>
+        </section>
+        <script>
+           document.getElementById('convertHtmlToPdf').addEventListener('click', function() {
+    const htmlContent = document.getElementById('htmlContent').value.trim();
+    if (htmlContent !== '') {
+        // Convert HTML to PDF
+        const pdf = new jsPDF();
+        pdf.fromHTML(htmlContent, 15, 15);
+        pdf.save('converted.pdf');
+    } else {
+        alert('Please enter HTML content to convert.');
+    }
+});
+
+        </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOC to PDF - Free Online PDF Tools</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css-color.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="app.js" defer></script>
+    <meta name="description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+    <meta name="author" content="Md Arsalan"/>
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, compress PDF, convert PDF, online PDF editor, free PDF tools"/>
+    <link rel="canonical" href="https://pdftoolz.netlify.app/"/>
+    <link rel="icon" type="image/x-icon" href="/logo.ico"/>
+    <meta property="og:site_name" content="PDFToolz - Free Online PDF Tools"/>
+    <meta property="og:title" content="PDFToolz | Free Online PDF Tools"/>
+    <meta property="og:description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+    <meta property="og:image" content="https://pdftoolz.netlify.app/logo.png"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://pdftoolz.netlify.app/"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@MdArsalan"/>
+    <meta name="twitter:creator" content="@MdArsalan"/>
+    <meta name="twitter:title" content="PDFToolz | Free Online PDF Tools"/>
+    <meta name="twitter:description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+    <meta name="twitter:image" content="https://pdftoolz.netlify.app/logo.png"/>
+</head>
+<body>
+    <div class="pattern-bg"></div>
+    <!-- Header Section -->
+    <div id="header"></div>
+
+    <!-- Start of DOC to PDF Converter -->
+    <div class="container">
+        <div class="containerx-wrapper">
+            <div class="containerx">
+                <h1>DOC to PDF</h1>
+                <form id="doc-to-pdf-form">
+                    <input type="file" id="doc-input" accept=".doc,.docx" required>
+                    <button type="submit">Convert to PDF</button>
+                </form>
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End of DOC to PDF Converter -->
+
+    <!-- Footer Section -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('doc-to-pdf-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const file = document.getElementById('doc-input').files[0];
+            if (!file) {
+                alert('Please select a DOC file to convert.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const text = event.target.result;
+
+                const pdfDoc = await PDFLib.PDFDocument.create();
+                const page = pdfDoc.addPage();
+                const { width, height } = page.getSize();
+
+                page.drawText(text, {
+                    x: 50,
+                    y: height - 50,
+                    size: 12
+                });
+
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                document.getElementById('output').innerText = 'DOC has been converted to PDF!';
+            }
+
+            reader.readAsText(file); // This will work for plain text files, not for DOC/DOCX
+        });
+    </script>
+</body>
+</html>

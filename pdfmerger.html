@@ -31,17 +31,15 @@
 <body>
     <!--header section-->
     <div id="header"></div>
-    <div class="pattern-bg"></div>
+
     <!-- Start of the IMG TO PDF CONVERTER -->
-    <div class="containerx-wrapper">
-        <div class="containerx">
-            <h1>Image to PDF Converter</h1>
-            <form id="image-form">
-                <input type="file" id="image-input" accept="image/*" multiple required>
-                <button type="submit">Convert to PDF</button>
-            </form>
-            <div id="output"></div>
-        </div>
+    <div class="container">
+        <h1>Merge PDFs</h1>
+        <form id="merge-form">
+            <input type="file" id="pdf-input" accept="application/pdf" multiple required>
+            <button type="submit">Merge PDFs</button>
+        </form>
+        <div id="output"></div>
     </div>
     <!--end of functionalities section-->
 
@@ -50,7 +48,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            imageToPDF(); // Call the function specific to this page
+            PDFMerger(); // Call the function specific to this page
         });
     </script>
 </body>

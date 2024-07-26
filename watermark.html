@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to PDF Converter</title>
+    <title>WaterMark PDFs - free online watermark pdf tools.</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css-color.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="app.js" defer></script>
     <meta name="description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -33,24 +33,27 @@
     <div id="header"></div>
     <div class="pattern-bg"></div>
     <!-- Start of the IMG TO PDF CONVERTER -->
-    <div class="containerx-wrapper">
-        <div class="containerx">
-            <h1>Image to PDF Converter</h1>
-            <form id="image-form">
-                <input type="file" id="image-input" accept="image/*" multiple required>
-                <button type="submit">Convert to PDF</button>
-            </form>
-            <div id="output"></div>
-        </div>
+    <div class="container">
+        
     </div>
     <!--end of functionalities section-->
-
+    <div class="containerx-wrapper">
+        <div class="containerx">
+            <h1>Watermark PDF</h1>
+        <form id="watermark-form">
+            <input type="file" id="pdf-input" accept="application/pdf" required>
+            <input type="text" id="watermark-text" placeholder="Watermark text" required>
+            <button type="submit">Add Watermark</button>
+        </form>
+        <div id="output"></div>
+        </div>
+    </div>
     <!--footer section-->
     <div id="footer"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            imageToPDF(); // Call the function specific to this page
+            watermarkPDF(); // Call the function specific to this page
         });
     </script>
 </body>

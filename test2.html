@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to PDF Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .containerx-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 100px); /* Adjust according to navbar and footer height */
+        }
+
+        .containerx {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            display: grid;
+            place-items: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"], input[type="number"] {
+            display: block;
+            margin: 20px auto;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .containerx {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!-- Start of the IMG TO PDF CONVERTER -->
+    <div class="containerx-wrapper">
+        <div class="containerx">
+            <h1>Image to PDF Converter</h1>
+            <form id="image-form">
+                <input type="file" id="image-input" accept="image/*" multiple required>
+                <button type="submit">Convert to PDF</button>
+            </form>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script>
+        function loadHTML(url, elementId) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(elementId).innerHTML = data;
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header.html', 'header');
+            loadHTML('footer.html', 'footer');
+        });
+
+        document.getElementById('image-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            const files = document.getElementById('image-input').files;
+            
+            if (files.length === 0) {
+                alert('Please select images to convert.');
+                return;
+            }
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    
+                    img.onload = function() {
+                        const imgWidth = pdf.internal.pageSize.getWidth();
+                        const imgHeight = (img.height * imgWidth) / img.width;
+                        
+                        if (i > 0) {
+                            pdf.addPage();
+                        }
+                        
+                        pdf.addImage(img, 'JPEG', 0, 0, imgWidth, imgHeight);
+                        
+                        if (i === files.length - 1) {
+                            pdf.save('converted.pdf');
+                            document.getElementById('output').innerText = 'PDF has been generated!';
+                        }
+                    }
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

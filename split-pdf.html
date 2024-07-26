@@ -5,156 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image to PDF Converter</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <link rel="stylesheet" href="css-color.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="app.js" defer></script>
+    <meta name="description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="author" content="Md Arsalan"/>
+<meta name="keywords" content="PDF tools, merge PDF, split PDF, compress PDF, convert PDF, online PDF editor, free PDF tools"/>
+<link rel="canonical" href="https://pdftoolz.netlify.app/"/>
+<link rel="icon" type="image/x-icon" href="/logo.ico"/>
+<meta property="og:site_name" content="PDFToolz - Free Online PDF Tools"/>
+<meta property="og:title" content="PDFToolz | Free Online PDF Tools"/>
+<meta property="og:description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+<meta property="og:image" content="https://pdftoolz.netlify.app/logo.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://pdftoolz.netlify.app/"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@MdArsalan"/>
+<meta name="twitter:creator" content="@MdArsalan"/>
+<meta name="twitter:title" content="PDFToolz | Free Online PDF Tools"/>
+<meta name="twitter:description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
+<meta name="twitter:image" content="https://pdftoolz.netlify.app/logo.png"/>
+
 </head>
-<style>
-
-
-
-.containerx {
-    text-align: center;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    max-width: 400px;
-    width: 90%;
-    display: grid;
-    place-items: center;
-}
-
-
-h1 {
-    margin-bottom: 20px;
-}
-
-input[type="file"] {
-    display: block;
-    margin: 20px auto;
-}
-
-button {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-#output {
-    margin-top: 20px;
-}
-
-@media (max-width: 600px) {
-    .container {
-        width: 100%;
-        padding: 10px;
-    }
-}
-
-</style>
 <body>
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="logo"><img src="logo.png" ></div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#tools" class="nav-link">Tools</a></li>
-                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="cta-buttons">
-                <a href="#get-started" class="btn primary-btn">Get Started</a>
-                <a href="#try-free" class="btn secondary-btn">Try for Free</a>
-            </div>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
+    <!--header section-->
+    <div id="header"></div>
+    <div class="pattern-bg"></div>
+    <!-- Start of the IMG TO PDF CONVERTER -->
+    <!-- Start of the IMG TO PDF CONVERTER -->
+ <div class="containerx-wrapper">
+    <div class="containerx">
+        <h1>Split PDF</h1>
+        <form id="split-pdf-form">
+            <input type="file" id="pdf-input" accept="application/pdf" required>
+            <input type="number" id="split-page" placeholder="Page number to split" required>
+            <button type="submit">Split PDF</button>
+        </form>
+        <div id="output"></div>
+    </div>
+</div>
+    <!--end of functionalities section-->
 
-        <!--start of the IMG TO PDF CONVERTOR-->
-        <div class="containerx">
-            <h1>Split PDF</h1>
-            <form id="split-pdf-form">
-                <input type="file" id="pdf-input" accept="application/pdf" required>
-                <input type="number" id="split-page" placeholder="Page number to split" required>
-                <button type="submit">Split PDF</button>
-            </form>
-            <div id="output"></div>
-        </div>
-        <script>
-           document.getElementById('split-pdf-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    
-    const file = document.getElementById('pdf-input').files[0];
-    const splitPage = parseInt(document.getElementById('split-page').value);
-    
-    if (!file || isNaN(splitPage) || splitPage < 1) {
-        alert('Please select a PDF file and enter a valid page number to split.');
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = async function(event) {
-        const pdfBytes = event.target.result;
-        const pdfLib = PDFLib;
-        const pdf = await pdfLib.PDFDocument.load(pdfBytes);
-        
-        if (splitPage >= pdf.getPageCount()) {
-            alert('The page number exceeds the total number of pages in the PDF.');
-            return;
-        }
-        
-        const pdf1 = await pdfLib.PDFDocument.create();
-        const pdf2 = await pdfLib.PDFDocument.create();
-        
-        const pages1 = await pdf1.copyPages(pdf, Array.from({ length: splitPage }, (_, i) => i));
-        const pages2 = await pdf2.copyPages(pdf, Array.from({ length: pdf.getPageCount() - splitPage }, (_, i) => i + splitPage));
-        
-        pages1.forEach(page => pdf1.addPage(page));
-        pages2.forEach(page => pdf2.addPage(page));
-        
-        const pdf1Bytes = await pdf1.save();
-        const pdf2Bytes = await pdf2.save();
-        
-        const blob1 = new Blob([pdf1Bytes], { type: 'application/pdf' });
-        const blob2 = new Blob([pdf2Bytes], { type: 'application/pdf' });
-        
-        const url1 = URL.createObjectURL(blob1);
-        const url2 = URL.createObjectURL(blob2);
-        
-        const a1 = document.createElement('a');
-        a1.href = url1;
-        a1.download = 'split1.pdf';
-        document.body.appendChild(a1);
-        a1.click();
-        document.body.removeChild(a1);
-        URL.revokeObjectURL(url1);
-        
-        const a2 = document.createElement('a');
-        a2.href = url2;
-        a2.download = 'split2.pdf';
-        document.body.appendChild(a2);
-        a2.click();
-        document.body.removeChild(a2);
-        URL.revokeObjectURL(url2);
-        
-        document.getElementById('output').innerText = 'PDF has been split!';
-    }
-    reader.readAsArrayBuffer(file);
-});
+    <!--footer section-->
+    <div id="footer"></div>
 
-        </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            imageToPDF(); // Call the function specific to this page
+        });
+    </script>
 </body>
 </html>
-
-
-

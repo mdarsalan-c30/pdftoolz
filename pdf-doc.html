@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to PDF Converter</title>
+    <title>PDF to DOC - free online watermark pdf tools.</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css-color.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfjs-dist/2.7.570/pdf.min.js"></script>
     <script src="app.js" defer></script>
     <meta name="description" content="PDFToolz offers a suite of free online tools to manage PDF files, including merge, split, compress, convert, and more. Easy to use and accessible from any device."/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -33,25 +33,67 @@
     <div id="header"></div>
     <div class="pattern-bg"></div>
     <!-- Start of the IMG TO PDF CONVERTER -->
+    <div class="container">
+        
+    </div>
+    <!--end of functionalities section-->
     <div class="containerx-wrapper">
         <div class="containerx">
-            <h1>Image to PDF Converter</h1>
-            <form id="image-form">
-                <input type="file" id="image-input" accept="image/*" multiple required>
-                <button type="submit">Convert to PDF</button>
+            <h1>PDF to DOC</h1>
+            <form id="pdf-to-doc-form">
+                <input type="file" id="pdf-input" accept="application/pdf" required>
+                <button type="submit">Convert to DOC</button>
             </form>
             <div id="output"></div>
         </div>
     </div>
-    <!--end of functionalities section-->
-
     <!--footer section-->
     <div id="footer"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            imageToPDF(); // Call the function specific to this page
+            PDFtoDOC(); // Call the function specific to this page
         });
+    </script>
+    <script>
+          document.getElementById('pdf-to-doc-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+    
+        const file = document.getElementById('pdf-input').files[0];
+        if (!file) {
+            alert('Please select a PDF file to convert.');
+            return;
+        }
+    
+        const reader = new FileReader();
+        reader.onload = async function(event) {
+            const arrayBuffer = event.target.result;
+            const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+    
+            let textContent = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const text = await page.getTextContent();
+                text.items.forEach(item => {
+                    textContent += item.str + ' ';
+                });
+                textContent += '\n\n';
+            }
+    
+            const blob = new Blob([textContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            document.getElementById('output').innerText = 'PDF has been converted to DOC!';
+        }
+        reader.readAsArrayBuffer(file);
+    });
+    
     </script>
 </body>
 </html>
